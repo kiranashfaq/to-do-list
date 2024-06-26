@@ -1,8 +1,8 @@
 var addBtn = document.getElementById("add-btn")
-var addInput = document.getElementById("add-inp"); // input box
-var textInput = document.getElementById("text-inp"); // to do list
+var addInput = document.getElementById("add-inp"); // t-d-l
+var textInput = document.getElementById("text-inp"); // input box
 
-
+var editTodo = null
 
 addBtn.addEventListener("click", function() {
     // for empty input 
@@ -11,33 +11,42 @@ var emptyInp = textInput.value
       alert("You must need to write something");
       return false;
     }
+    // for editing task 
+    if (addBtn.innerHTML === "Edit") {
+        editTodo.target.previousElementSibling.innerHTML = emptyInp
+        addBtn.innerHTML = "Add-Task"
+        textInput.value = ""
+    }
     // for adding task 
-var editBtn = `<button class="edit-del" id="edit">Edit</button>`;
-var delBtn = `<button class="edit-del" id="del">delete</button>`;
+    else{
+var editBtn = `<button class="edit-del" >Edit</button>`;
+var delBtn = `<button class="edit-del">delete</button>`;
 
 addInput.innerHTML += `<div class="main-div" id="div" >
 <div class="edit-div" id="edit-inp">
 ${textInput.value}</div>
 ${editBtn} ${delBtn}</div>`;
 
-// del button 
 
-var del = document.getElementById("del");
-var div = document.getElementById("div");
-// edit btn 
-var edit = document.getElementById("edit");
-var editInp = document.getElementById("edit-inp");
+addInput.appendChild(div)
 
-// del functionality 
-del.addEventListener("click", function () {
-    div.innerHTML = "";
+textInput.value = "";
+
+ var editInp = document.getElementById("edit-inp");
 
 
-});
-// edit functionality 
-edit.addEventListener("click" , function(){
-    editInp.innerHTML = `<input class="new-inp" type="text"  value="${textInput.value}">`
+    }
 })
-
-
-})
+// for del & edit /
+const updateTodo = (e)=>{
+    if(e.target.innerHTML === "delete"){
+        addInput.removeChild(e.target.parentElement)
+    }
+    if(e.target.innerHTML === "Edit"){
+        textInput.value = e.target.previousElementSibling.innerHTML
+        textInput.focus()
+        addBtn.innerText = "Edit"
+        editTodo = e
+    }
+}
+addInput.addEventListener("click", updateTodo)
